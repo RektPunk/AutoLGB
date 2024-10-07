@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "autolgb"
+version = "0.0.1"
+description = ""
+authors = ["RektPunk <rektpunk@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+lightgbm = "^4.5.0"
+optuna = "^4.0.0"
+pandas = "^2.2.3"
+scikit-learn = "^1.5.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
