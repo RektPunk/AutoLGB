@@ -17,12 +17,9 @@ TrainDataType = (
     | list[Sequence]
     | list[np.ndarray]
 )
-PredictDataType = str | Path | np.ndarray | pd.DataFrame | scipy.sparse.spmatrix
 LabelType = list[float] | list[int] | np.ndarray | pd.Series | pd.DataFrame
 WeightType = list[float] | list[int] | np.ndarray | pd.Series
-PositionType = np.ndarray | pd.Series
 InitScoreType = list[float] | list[list[float]] | np.ndarray | pd.Series | pd.DataFrame
-GroupType = list[float] | list[int] | np.ndarray | pd.Series
 CategoricalFeatureConfiguration = list[str] | list[int] | Literal["auto"]
 FeatureNameConfiguration = list[str] | Literal["auto"]
 
