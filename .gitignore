@@ -5,3 +5,4 @@ __pycache__/
 .DS_store
 .vscode/
 .pytest_cache/
+.ruff_cache/
