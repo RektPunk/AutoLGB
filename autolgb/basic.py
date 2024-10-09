@@ -34,10 +34,3 @@ class Objective(StrEnum):
     binary: str = "binary"
     multiclass: str = "multiclass"
     regression: str = "regression"
-
-
-TASK_OBJECTIVE_MAPPER: dict[Task, Objective] = {
-    Task.binary: Objective.binary,
-    Task.multiclass: Objective.multiclass,
-    Task.continuous: Objective.regression,
-}
