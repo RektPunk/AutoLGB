@@ -25,7 +25,7 @@ class Dataset:
         init_score: InitScoreType | None = None,
         feature_name: FeatureNameConfiguration = "auto",
         categorical_feature: CategoricalFeatureConfiguration = "auto",
-        params: dict[str, Any] | None = None,
+        params: dict[str, Any] = {"verbose": -1},
         free_raw_data: bool = True,
     ) -> None:
         self.data = data
