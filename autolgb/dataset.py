@@ -17,6 +17,14 @@ from autolgb.basic import (
 
 
 class Dataset:
+    """Dataset in AutoLGB.
+    AutoLGB does not train on raw data as LightGBM.
+    It discretizes continuous features into histogram bins, tries to combine categorical features,
+    and automatically handles missing and infinite values.
+
+    This class handles that preprocessing, and holds that alternative representation of the input data.
+    """
+
     def __init__(
         self,
         data: TrainDataType,
@@ -28,6 +36,36 @@ class Dataset:
         params: dict[str, Any] = {"verbose": -1},
         free_raw_data: bool = True,
     ) -> None:
+        """Initializes the Dataset object.
+        Parameters
+        ----------
+        data : str, pathlib.Path, numpy array, pandas DataFrame, scipy.sparse, Sequence, list of Sequence, list of numpy array
+            Data source of Dataset.
+            If str or pathlib.Path, it represents the path to a text file (CSV, TSV, or LibSVM) or a LightGBM Dataset binary file.
+        label : list, numpy 1-D array, pandas Series / one-column DataFrame, pyarrow Array, pyarrow ChunkedArray or None, optional (default=None)
+            Label of the data.
+        weight : list, numpy 1-D array, pandas Series, pyarrow Array, pyarrow ChunkedArray or None, optional (default=None)
+            Weight for each instance. Weights should be non-negative.
+        init_score : list, list of lists (for multi-class task), numpy array, pandas Series, pandas DataFrame (for multi-class task), pyarrow Array, pyarrow ChunkedArray, pyarrow Table (for multi-class task) or None, optional (default=None)
+            Init score for Dataset.
+        feature_name : list of str, or 'auto', optional (default="auto")
+            Feature names.
+            If 'auto' and data is pandas DataFrame or pyarrow Table, data columns names are used.
+        categorical_feature : list of str or int, or 'auto', optional (default="auto")
+            Categorical features.
+            If list of int, interpreted as indices.
+            If list of str, interpreted as feature names (need to specify ``feature_name`` as well).
+            If 'auto' and data is pandas DataFrame, pandas unordered categorical columns are used.
+            All values in categorical features will be cast to int32 and thus should be less than int32 max value (2147483647).
+            Large values could be memory consuming. Consider using consecutive integers starting from zero.
+            All negative values in categorical features will be treated as missing values.
+            The output cannot be monotonically constrained with respect to a categorical feature.
+            Floating point numbers in categorical features will be rounded towards 0.
+        params : dict or None, optional (default=None)
+            Other parameters for Dataset.
+        free_raw_data : bool, optional (default=True)
+            If True, raw data is freed after constructing inner Dataset.
+        """
         self.data = data
         self.label = label
         self.weight = weight
@@ -37,13 +75,13 @@ class Dataset:
         self.params = params
         self.free_raw_data = free_raw_data
 
-        if label is not None:
+        if label:
             _task_str = type_of_target(y=label)
-            _task = getattr(Task, _task_str)
+            _task: Task = getattr(Task, _task_str)
             if _task is None:
                 raise ValueError("Unsupported task.")
 
-            self.task: Task = _task
+            self.task = _task
             if isinstance(label, pd.DataFrame):
                 if label.shape[1] > 1:
                     raise ValueError("Dimension of label must 1")
@@ -56,6 +94,7 @@ class Dataset:
 
     @property
     def dtrain(self) -> lgb.Dataset:
+        """Return the input data into a lgb.Dataset object for training."""
         return lgb.Dataset(
             data=self.data,
             label=self.label,
@@ -69,14 +108,17 @@ class Dataset:
 
     @property
     def dpredict(self) -> TrainDataType:
+        """Returns the input data as-is for use in predictions."""
         return self.data
 
     @property
     def is_encode_needed(self) -> bool:
+        """Checks if label encoding is needed for the given task (only for binary and multiclass tasks)."""
         return getattr(self, "_is_encode_needed", False)
 
     @property
     def label_encoder(self) -> LabelEncoder:
+        """Returns the LabelEncoder object used for encoding target labels, if applicable."""
         if not self.is_encode_needed:
             raise ValueError("No label encoder exists.")
         return self._label_encoder
