@@ -17,11 +17,8 @@ from autolgb.basic import (
 
 
 class Dataset:
-    """Dataset in AutoLGB.
-    AutoLGB does not train on raw data as LightGBM.
-    It discretizes continuous features into histogram bins, tries to combine categorical features,
-    and automatically handles missing and infinite values.
-
+    """Dataset in AutoLGB. AutoLGB does not train on raw data as LightGBM.
+    It discretizes continuous features into histogram bins, tries to combine categorical features, and automatically handles missing and infinite values.
     This class handles that preprocessing, and holds that alternative representation of the input data."""
 
     def __init__(
