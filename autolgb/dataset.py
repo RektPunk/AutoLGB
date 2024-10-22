@@ -22,8 +22,7 @@ class Dataset:
     It discretizes continuous features into histogram bins, tries to combine categorical features,
     and automatically handles missing and infinite values.
 
-    This class handles that preprocessing, and holds that alternative representation of the input data.
-    """
+    This class handles that preprocessing, and holds that alternative representation of the input data."""
 
     def __init__(
         self,
