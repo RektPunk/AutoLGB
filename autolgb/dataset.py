@@ -33,6 +33,7 @@ class Dataset:
         free_raw_data: bool = True,
     ) -> None:
         """Initializes the Dataset object.
+
         Parameters
         ----------
         data : str, pathlib.Path, numpy array, pandas DataFrame, scipy.sparse, Sequence, list of Sequence, list of numpy array
