@@ -72,7 +72,7 @@ class Dataset:
         self.params = params
         self.free_raw_data = free_raw_data
 
-        if label:
+        if label is not None:
             _task_str = type_of_target(y=label)
             _task: Task = getattr(Task, _task_str)
             if _task is None:
