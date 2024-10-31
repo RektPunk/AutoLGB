@@ -180,7 +180,6 @@ class Engine:
         | BaseCrossValidator
         | None = None,
         nfold: int = 5,
-        stratified: bool = True,
         shuffle: bool = True,
         init_model: str | lgb.Path | lgb.Booster | None = None,
         fpreproc: Callable[
@@ -207,8 +206,6 @@ class Engine:
             This argument has highest priority over other data split arguments.
         nfold : int, optional (default=5)
             Number of folds in CV.
-        stratified : bool, optional (default=True)
-            Whether to perform stratified sampling.
         shuffle : bool, optional (default=True)
             Whether to shuffle before splitting data.
         init_model : str, pathlib.Path, Booster or None, optional (default=None)
@@ -249,7 +246,9 @@ class Engine:
             num_boost_round=self.num_boost_round,
             folds=folds,
             nfold=nfold,
-            stratified=stratified,
+            stratified=True
+            if train_set.task in {Task.binary, Task.multiclass}
+            else False,
             shuffle=shuffle,
             init_model=init_model,
             fpreproc=fpreproc,
@@ -293,8 +292,6 @@ class Engine:
             This argument has highest priority over other data split arguments.
         nfold : int, optional (default=5)
             Number of folds in CV.
-        stratified : bool, optional (default=True)
-            Whether to perform stratified sampling.
         shuffle : bool, optional (default=True)
             Whether to shuffle before splitting data.
         init_model : str, pathlib.Path, Booster or None, optional (default=None)
