@@ -353,3 +353,6 @@ class Engine:
     def __check_fitted(self) -> None:
         if not getattr(self, "_is_fitted", False):
             raise NotImplementedError("fit is not finished.")
+
+    def __repr__(self):
+        return f"Engine(params={self.params}, num_boost_round={self.num_boost_round})"
