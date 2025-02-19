@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-lightgbm = "^4.5.0"
+lightgbm = "^4.6.0"
 optuna = "^4.0.0"
 pandas = "^2.2.3"
 scikit-learn = "^1.5.2"
